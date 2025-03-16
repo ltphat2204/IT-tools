@@ -1,0 +1,35 @@
+﻿@model PresentationLayer.Models.Auth.LoginViewModel
+@{
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+    ViewBag.Title = "Login";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+        <h2 class="text-center mb-4">Login</h2>
+
+        @using (Html.BeginForm("Login", "Auth", FormMethod.Post, new { @class = "card card-body" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Email, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Password, new { @class = "form-label" })
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3 form-check">
+                @Html.CheckBoxFor(m => m.RememberMe, new { @class = "form-check-input" })
+                @Html.LabelFor(m => m.RememberMe, new { @class = "form-check-label" })
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+        }
+    </div>
+</div>
