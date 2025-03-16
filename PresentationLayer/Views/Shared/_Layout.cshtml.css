@@ -1,48 +1,72 @@
-﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+﻿#wrapper {
+    display: flex;
+    width: 100%;
 }
 
-a {
-  color: #0077cc;
+.bg-sidetab {
+    background-color: #343a40;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.nav-title {
+    padding: 0.5rem 1rem;
+    color: #c6c6c6;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.nav-title:not(:first-child) {
+    margin-top: 1rem;
 }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+#sidebar-wrapper {
+    min-width: 250px;
+    max-width: 250px;
+    background-color: #343a40;
+    min-height: 100vh;
+    transition: margin 0.25s ease-out;
+    overflow-y: auto;
 }
 
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+#sidebar-wrapper .sidebar-heading {
+    font-size: 1.5rem;
+    color: #fff;
+    display: block;
+    text-decoration: none;
+    font-weight: 700;
+    text-align: center;
 }
 
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
+#sidebar-wrapper ul.nav {
+    padding: 0;
+    list-style: none;
+}
+
+#sidebar-wrapper ul.nav li.nav-item a.nav-link {
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+}
+
+#sidebar-wrapper ul.nav li.nav-item a.nav-link:hover,
+#sidebar-wrapper ul.nav li.nav-item a.nav-link.active {
+    background-color: #495057;
+}
+/* Page content wrapper */
+#page-content-wrapper {
+    flex: 1;
+}
+#page-content-wrapper .navbar{
+    padding: 0.875rem 0;
+}
+/* When toggled, hide the sidebar */
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: -250px;
+}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: -250px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: 0;
+    }
 }
