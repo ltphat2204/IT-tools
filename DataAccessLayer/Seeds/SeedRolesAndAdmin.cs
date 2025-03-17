@@ -8,14 +8,11 @@ namespace DataAccessLayer.Seeds
     {
         public static async Task SeedRolesAndAdminAsync(IServiceProvider serviceProvider)
         {
-            // Retrieve services from DI
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-            // Correct syntax for roles array initialization
             string[] roles = ["User", "Premium", "Admin"];
 
-            // Create roles if they do not exist
             foreach (var role in roles)
             {
                 if (!await roleManager.RoleExistsAsync(role))
@@ -29,7 +26,6 @@ namespace DataAccessLayer.Seeds
                 }
             }
 
-            // Define the admin email and a strong password (adjust as needed)
             var adminEmail = "admin@it-tools.com";
             var adminUser = await userManager.FindByEmailAsync(adminEmail);
             if (adminUser == null)
@@ -40,7 +36,6 @@ namespace DataAccessLayer.Seeds
                     Email = adminEmail
                 };
 
-                // Use a stronger password that meets Identity requirements (e.g., "Admin123!")
                 var createAdmin = await userManager.CreateAsync(adminUser, "Admin123!");
                 if (createAdmin.Succeeded)
                 {

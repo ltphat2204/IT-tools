@@ -18,7 +18,14 @@ namespace DataAccessLayer.Repositories
                 UserName = email,
                 Email = email
             };
-            return await _userManager.CreateAsync(user, password);
+
+            var createAccount = await _userManager.CreateAsync(user, password);
+            if (!createAccount.Succeeded)
+            {
+                throw new Exception("Failed to create user: " +
+                    string.Join(", ", createAccount.Errors.Select(e => e.Description)));
+            }
+            return await _userManager.AddToRoleAsync(user, "User");
         }
 
         public async Task<ApplicationUser?> GetUserByEmailAsync(string email)
