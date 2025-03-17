@@ -10,7 +10,8 @@
         <p class="text-muted mb-4">
             It’s free for personalized experience
         </p>
-        <form asp-action="Register" asp-controller="Auth" method="post">
+        @using (Html.BeginForm("Register", "Auth", FormMethod.Post))
+        {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -33,7 +34,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary w-100">Sign up</button>
-        </form>
+        }
 
         <div class="text-center text-muted my-3">OR</div>
 
