@@ -1,4 +1,5 @@
-﻿using BusinessLayer.Interfaces;
+﻿using BusinessLayer.Helpers;
+using BusinessLayer.Interfaces;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
@@ -43,5 +44,4 @@ namespace BusinessLayer.Services
             return await _cloundinary.DestroyAsync(deleteParams);
         }
     }
-}
 }
