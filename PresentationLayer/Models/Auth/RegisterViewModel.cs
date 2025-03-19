@@ -5,6 +5,9 @@ namespace PresentationLayer.Models.Auth
     public class RegisterViewModel
     {
         [Required]
+        [Display(Name = "Name")]
+        public required string Name { get; set; }
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public required string Email { get; set; }

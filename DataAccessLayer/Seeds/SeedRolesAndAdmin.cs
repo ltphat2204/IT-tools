@@ -33,7 +33,9 @@ namespace DataAccessLayer.Seeds
                 adminUser = new ApplicationUser
                 {
                     UserName = adminEmail,
-                    Email = adminEmail
+                    Email = adminEmail,
+                    Name = "Admin",
+                    Photo = "https://res.cloudinary.com/ltphat2204/image/upload/q_auto:best/f_auto/admin_profile"
                 };
 
                 var createAdmin = await userManager.CreateAsync(adminUser, "Admin123!");

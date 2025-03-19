@@ -11,12 +11,13 @@ namespace DataAccessLayer.Repositories
         private readonly UserManager<ApplicationUser> _userManager = userManager;
         private readonly SignInManager<ApplicationUser> _signInManager = signInManager;
 
-        public async Task<IdentityResult> RegisterUserAsync(string email, string password)
+        public async Task<IdentityResult> RegisterUserAsync(string name, string email, string password)
         {
             var user = new ApplicationUser
             {
                 UserName = email,
-                Email = email
+                Email = email,
+                Name = name
             };
 
             var createAccount = await _userManager.CreateAsync(user, password);

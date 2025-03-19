@@ -67,7 +67,7 @@ namespace PresentationLayer.Controllers
             try
             {
                 logger.LogInformation("Registration attempt for user: {Email}", model.Email);
-                var registerResult = await unitOfWork.Users.RegisterUserAsync(model.Email, model.Password);
+                var registerResult = await unitOfWork.Users.RegisterUserAsync(model.Name, model.Email, model.Password);
                 if (registerResult.Succeeded)
                 {
                     logger.LogInformation("New user registered: {Email}", model.Email);
