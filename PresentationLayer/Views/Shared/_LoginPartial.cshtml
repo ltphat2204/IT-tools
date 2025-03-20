@@ -16,10 +16,16 @@
                 <img src="@profilePhoto" alt="@displayName" class="rounded-circle" style="width: 30px; height: 30px; object-fit: cover; margin-right: 5px;" />
                 <span>Xin chào, @displayName</span>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown" style="position: absolute">
                 <li class="nav-item">
                     <a class="dropdown-item" asp-controller="User" asp-action="Profile">Profile</a>
                 </li>
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="nav-item">
+                        <a class="dropdown-item" asp-controller="Admin" asp-action="Index">Admin dashboard</a>
+                    </li>
+                }
                 <li class="nav-item">
                     <form class="form-inline" asp-controller="Auth" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                         <button type="submit" class="dropdown-item btn btn-link text-dark" style="border-radius:0;">Logout</button>
