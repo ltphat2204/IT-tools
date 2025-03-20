@@ -1,0 +1,38 @@
+﻿@{
+	ViewData["Title"] = "Groups";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Group ID</th>
+            <th>Group Name</th>
+            <th>Tools</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var group in Model)
+        {
+            <tr>
+                <td>@group.GroupId</td>
+                <td>@group.GroupName</td>
+                <td>
+                    @if (group.Tools != null && group.Tools.Any())
+                    {
+                        foreach (var tool in group.Tools)
+                        {
+                            <span>@tool.Name</span>
+
+                            <br />
+                        }
+                    }
+                    else
+                    {
+                        <span>No tools assigned</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

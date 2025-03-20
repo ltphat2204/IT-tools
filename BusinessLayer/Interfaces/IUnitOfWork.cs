@@ -10,6 +10,8 @@ namespace BusinessLayer.Interfaces
     public interface IUnitOfWork : IDisposable
     {
         public IUserRepository Users { get; }
+        public IGroupRepository Groups { get; }
+        public IToolRepository Tools { get; }
         Task<int> SaveChangesAsync();
     }
 }
