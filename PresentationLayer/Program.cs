@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using DataAccessLayer.Seeds;
 using System.Diagnostics;
 using BusinessLayer.Helpers;
+using Microsoft.Data.SqlClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
