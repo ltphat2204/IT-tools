@@ -2,6 +2,11 @@
 	ViewData["Title"] = "Groups";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<div class="mb-3 d-flex justify-content-end">
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createGroupModal">
+        <i class="bi bi-plus-lg me-1"></i> New Group
+    </button>
+</div>
 
 <table class="table table-bordered table-striped">
     <thead>
@@ -9,6 +14,7 @@
             <th>Group ID</th>
             <th>Group Name</th>
             <th>Tools</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -32,7 +38,109 @@
                         <span>No tools assigned</span>
                     }
                 </td>
+                <td>
+                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editGroupModal" data-id="@group.GroupId" data-name="@group.GroupName">
+                        <i class="bi bi-pencil-square me-1"></i> Edit
+                    </button>
+                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteGroupModal" data-id="@group.GroupId" data-name="@group.GroupName">
+                        <i class="bi bi-trash3-fill me-1"></i> Delete
+                    </button>
+                </td>
             </tr>
         }
     </tbody>
 </table>
+
+<div class="modal fade" id="createGroupModal" tabindex="-1" role="dialog" aria-labelledby="createGroupModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createGroupModalLabel">Create New Group</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="@Url.Action("CreateGroup", "Admin")">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="GroupName">Group Name</label>
+                        <input type="text" class="form-control" id="GroupName" name="GroupName" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Group</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editGroupModal" tabindex="-1" role="dialog" aria-labelledby="editGroupModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editGroupModalLabel">Edit Group</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="@Url.Action("EditGroup", "Admin")">
+                <div class="modal-body">
+                    <input type="hidden" id="EditGroupId" name="GroupId" />
+                    <div class="form-group">
+                        <label for="EditGroupName">Group Name</label>
+                        <input type="text" class="form-control" id="EditGroupName" name="GroupName" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteGroupModal" tabindex="-1" role="dialog" aria-labelledby="deleteGroupModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteGroupModalLabel">Delete Group</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="@Url.Action("DeleteGroup", "Admin")">
+                <div class="modal-body">
+                    <input type="hidden" id="DeleteGroupId" name="GroupId" />
+                    <p>Are you sure you want to delete the group <strong><span id="DeleteGroupName"></span></strong>?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#createGroupModal').on('shown.bs.modal', function () {
+        $('#GroupName').focus();
+    });
+
+    $('#editGroupModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var groupId = button.data('id');
+        var groupName = button.data('name');
+
+        var modal = $(this);
+        modal.find('#EditGroupId').val(groupId);
+        modal.find('#EditGroupName').val(groupName);
+    });
+
+    $('#deleteGroupModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var groupId = button.data('id');
+        var groupName = button.data('name');
+
+        var modal = $(this);
+        modal.find('#DeleteGroupId').val(groupId);
+        modal.find('#DeleteGroupName').text(groupName);
+    });
+</script>
