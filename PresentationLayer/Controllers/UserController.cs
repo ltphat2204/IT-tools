@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PresentationLayer.Models.User;
 using DataAccessLayer;
+using System.Diagnostics;
 
 namespace PresentationLayer.Controllers
 {
@@ -11,9 +12,9 @@ namespace PresentationLayer.Controllers
         {
             _context = context;
         }
-        public IActionResult Profile(int id)
+        public IActionResult Profile(string id)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Id == id.ToString());
+            var user = _context.Users.FirstOrDefault(u => u.Id == id);
             if (user == null)
             {
                 return NotFound();
