@@ -13,13 +13,9 @@ var connectionString = string.Empty;
 if (builder.Environment.IsDevelopment())
 {
     builder.Configuration.AddEnvironmentVariables().AddJsonFile("appsettings.Development.json");
-    connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-}
-else
-{
-    connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
 }
 
+connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
