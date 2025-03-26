@@ -1,8 +1,6 @@
-﻿using System.Diagnostics;
-using BusinessLayer.Interfaces;
+﻿using BusinessLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using PresentationLayer.Models.Auth;
-using Microsoft.Extensions.Logging;
 
 namespace PresentationLayer.Controllers
 {

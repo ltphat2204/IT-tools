@@ -2,13 +2,6 @@
   "dependencies": {
     "secrets1": {
       "type": "secrets.user"
-    },
-    "mssql1": {
-      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('serviceConnectorResourceGroupName')]/providers/Microsoft.ServiceLinker/locations/eastasia/connectors/ConnectionStringsDefaultConnection_1EB4917C89",
-      "secretStore": "LocalSecretsFile",
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/ltphat2204/databases/Tools",
-      "type": "mssql.azure",
-      "connectionId": "ConnectionStrings:DefaultConnection"
     }
   }
 }

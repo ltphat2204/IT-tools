@@ -1,11 +1,13 @@
+using System.Diagnostics;
+using Azure.Identity;
+using BusinessLayer.Entities;
+using BusinessLayer.Helpers;
 using BusinessLayer.Interfaces;
 using DataAccessLayer;
-using BusinessLayer.Entities;
 using DataAccessLayer.Repositories;
+using DataAccessLayer.Seeds;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Seeds;
-using BusinessLayer.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +16,14 @@ if (builder.Environment.IsDevelopment())
 {
     builder.Configuration.AddEnvironmentVariables().AddJsonFile("appsettings.Development.json");
 }
+else
+{
+    builder.Configuration.AddEnvironmentVariables().AddJsonFile("appsettings.json").AddUserSecrets<Program>();
+}    
 
 connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+Debug.WriteLine("oke");
+Debug.WriteLine(connectionString);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
