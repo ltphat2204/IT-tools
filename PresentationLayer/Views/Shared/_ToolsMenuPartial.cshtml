@@ -1,0 +1,22 @@
+﻿@using BusinessLayer.Interfaces
+@inject IUnitOfWork UnitOfWork
+@{
+	var groups = UnitOfWork.Groups.GetAllWithTools();
+}
+
+@foreach (var group in groups)
+{
+    <li class="nav-title">@group.GroupName</li>
+
+    @if (group.Tools != null && group.Tools.Any())
+    {
+        foreach (var tool in group.Tools)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-white" href="#">
+                    <i class="bi bi-gear me-2"></i> @tool.Name
+                </a>
+            </li>
+        }
+    }
+}

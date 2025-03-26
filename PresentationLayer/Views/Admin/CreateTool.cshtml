@@ -1,0 +1,134 @@
+﻿@model PresentationLayer.Models.Tool.ToolCreateViewModel
+
+@{
+    ViewData["Title"] = "Create Tool";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="mb-4">Create Tool</h2>
+
+@using (Html.BeginForm("CreateTool", "Admin", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.UIStringHtml, new { id = "UIStringHtml" })
+    @Html.HiddenFor(m => m.Process, new { id = "Process" })
+    <div class="row g-2">
+        <div class="col-md-8">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Name, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", id = "EditName", required = "required" })
+                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.GroupId, new { @class = "form-label" })
+                @Html.DropDownListFor(m => m.GroupId, new SelectList(Model.Groups, "GroupId", "GroupName"), "Select Group", new { @class = "form-control", id = "EditGroupId", required = "required" })
+                @Html.ValidationMessageFor(m => m.GroupId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-12">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Description, new { @class = "form-label" })
+                @Html.TextAreaFor(m => m.Description, new { @class = "form-control", id = "EditDescription", rows = 3, required = "required" })
+                @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="row g-4 mt-2">
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Libraries, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.Libraries, new { @class = "form-control", id = "Libraries" })
+                @Html.ValidationMessageFor(m => m.Libraries, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group mt-2">
+                @Html.LabelFor(m => m.UIStringHtml, new { @class = "form-label" })
+                <div id="ui" style="height: 300px; border: 1px solid #ccc;"></div>
+                @Html.ValidationMessageFor(m => m.UIStringHtml, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group mt-2">
+                @Html.LabelFor(m => m.Process, new { @class = "form-label" })
+                <div id="process" style="height: 300px; border: 1px solid #ccc;"></div>
+                @Html.ValidationMessageFor(m => m.Process, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group mt-3">
+                <a href="@Url.Action("Tools", "Admin")" class="btn btn-secondary">Back</a>
+                <button type="submit" class="btn btn-primary">Create Tool</button>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card" style="height: 100%">
+                <div class="card-header">
+                    <h5 class="mb-0">Preview</h5>
+                </div>
+                <div class="card-body">
+                    <iframe id="htmlPreviewFrame" class="border w-100 p-4" style="height: 100%;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Include CodeMirror CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
+<!-- Include CodeMirror JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+<!-- Include CodeMirror HTML mode -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/htmlmixed/htmlmixed.min.js"></script>
+
+<script>
+    // Initialize CodeMirror editor
+    var uiEditor = CodeMirror(document.getElementById('ui'), {
+        mode: "htmlmixed",
+        lineNumbers: true,
+        theme: "default",
+        height: "300px"
+    });
+    var processEditor = CodeMirror(document.getElementById('process'), {
+        mode: "htmlmixed",
+        lineNumbers: true,
+        theme: "default",
+        height: "300px"
+    });
+
+    function updateIframe() {
+        var htmlContent = uiEditor.getValue();
+        var processContent = processEditor.getValue();
+        var librariesContent = $('#Libraries').val();
+        var iframe = document.getElementById('htmlPreviewFrame');
+        var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+
+        // Clear the iframe and write new content
+        iframeDocument.open();
+        iframeDocument.write('<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">');
+        iframeDocument.write('<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">');
+        iframeDocument.write(librariesContent);
+        iframeDocument.write('<script src="https://code.jquery.com/jquery-3.6.0.min.js"><\/script>');
+        iframeDocument.write(htmlContent);
+        iframeDocument.write('<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"><\/script>');
+        iframeDocument.write('<script>' + processContent + '<\/script>');
+        iframeDocument.close();
+    }
+
+    // Live preview of the HTML string and process script in an iframe
+    // Listen for changes in CodeMirror editors
+    uiEditor.on("change", updateIframe);
+    processEditor.on("change", updateIframe);
+
+    // Listen for changes in the Libraries input
+    $('#Libraries').on('input', updateIframe);
+
+    $('form').on('submit', function() {
+        // Update hidden fields with the current content of the CodeMirror editors
+        $('#UIStringHtml').val(uiEditor.getValue());
+        $('#Process').val(processEditor.getValue());
+    });
+
+    // Initialize the preview if there's initial content
+    $(document).ready(function() {
+        updateIframe();
+    });
+</script>
