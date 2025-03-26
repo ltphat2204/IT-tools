@@ -9,5 +9,6 @@ namespace BusinessLayer.Interfaces
 {
     public interface IGroupRepository: IGenericRepository<Group>
     {
+        public List<Group> GetAllWithTools();
     }
 }
