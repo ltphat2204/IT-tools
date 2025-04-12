@@ -1,12 +1,41 @@
-﻿@using PresentationLayer.Models.User;
+﻿@using PresentationLayer.Models.User
 @model UpdateProfileViewModel
 
-{
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<h2>Update Profile</h2>
-		</div>
-	</div>
+<div class="p-4 row">
+    <div class="col">
+        @using (Html.BeginForm("UpdateProfile", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Id)
+
+            <div class="text-center mb-4">
+                <img src="@Model.ImageUrl" alt="Profile Picture" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;" />
+            </div>
+
+            <div class="mb-3 text-center">
+                <input type="file" name="ProfileImage" id="profileImageInput" class="d-none" />
+                <button type="button" class="btn btn-primary" onclick="document.getElementById('profileImageInput').click();">
+                    Change Profile Picture
+                </button>
+            </div>
+
+            <h2 class="mb-3">My Profile</h2>
+            <p class="text-muted mb-4">View and edit your profile information</p>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Name, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Email, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @readonly = "readonly" })
+                <small class="form-text text-muted">Your email cannot be changed.</small>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 mb-3">Save Changes</button>
+            <button type="button" class="btn btn-outline-secondary w-100">Change Password</button>
+        }
+    </div>
 </div>
-}

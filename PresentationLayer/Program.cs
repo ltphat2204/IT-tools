@@ -8,6 +8,10 @@ using DataAccessLayer.Repositories;
 using DataAccessLayer.Seeds;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using DataAccessLayer.Seeds;
+using System.Diagnostics;
+using BusinessLayer.Helpers;
+using BusinessLayer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +38,9 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddTransient<IPhotoService, PhotoService>();
+
 builder.Services.AddRazorPages();
 
 builder.Services.Configure<IdentityOptions>(options =>

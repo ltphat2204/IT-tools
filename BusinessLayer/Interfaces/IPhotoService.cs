@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace BusinessLayer.Interfaces
 {
-    interface IPhotoService
+    public interface IPhotoService
     {
         Task<ImageUploadResult> AddPhotoAsync(IFormFile file);
 
