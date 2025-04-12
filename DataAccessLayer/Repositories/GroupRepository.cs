@@ -6,9 +6,9 @@ namespace DataAccessLayer.Repositories
 {
     public class GroupRepository(ApplicationDbContext context) : GenericRepository<Group>(context), IGroupRepository
     {
-        public List<Group> GetAllWithTools()
+        public IEnumerable<Group> GetAllWithTools()
         {
-            return [.. _context.Groups.Include(g => g.Tools)];
+            return _context.Groups.Include(g => g.Tools);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace PresentationLayer.Controllers
         [HttpGet]
         public IActionResult Groups()
         {
-            var groups = _unitOfWork.Groups.GetAll();
+            var groups = _unitOfWork.Groups.GetAllWithTools();
             return View(groups);
         }
 
@@ -139,12 +139,13 @@ namespace PresentationLayer.Controllers
                 ToolId = tool.ToolId,
                 Name = tool.Name,
                 Description = tool.Description,
-                UIStringHtml = tool.UIStringHtml,
+                UIStringHtml = tool.UIStringHtml?.Replace("`", @"\`").Replace("$", @"\$"),
                 Libraries = tool.Libraries,
-                Process = tool.Process,
+                Process = tool.Process?.Replace("`", @"\`").Replace("$", @"\$"),
                 GroupId = tool.GroupId,
                 Groups = groups
             };
+
 
             return View(model);
         }
