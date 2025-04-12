@@ -139,12 +139,13 @@ namespace PresentationLayer.Controllers
                 ToolId = tool.ToolId,
                 Name = tool.Name,
                 Description = tool.Description,
-                UIStringHtml = tool.UIStringHtml,
+                UIStringHtml = tool.UIStringHtml?.Replace("`", @"\`").Replace("$", @"\$"),
                 Libraries = tool.Libraries,
-                Process = tool.Process,
+                Process = tool.Process?.Replace("`", @"\`").Replace("$", @"\$"),
                 GroupId = tool.GroupId,
                 Groups = groups
             };
+
 
             return View(model);
         }

@@ -101,8 +101,8 @@
 
     // Update hidden fields when the form is submitted
     $('form').on('submit', function() {
-        $('#UIStringHtml').val(uiEditor.getValue());
-        $('#Process').val(processEditor.getValue());
+        $('#UIStringHtml').val(uiEditor.getValue().replace(/\\`/g, '`').replace(/\\\$/g, '$'));
+        $('#Process').val(processEditor.getValue().replace(/\\`/g, '`').replace(/\\\$/g, '$'));
     });
 
     // Live preview of the HTML string and process script in an iframe
