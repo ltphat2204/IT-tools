@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="jumbotron text-center bg-light py-5 container">
+    <h1 class="display-4">@Model.Name</h1>
+    <p class="lead">@Model.Description</p>
+</div>
+
+<hr class="my-4" />
+
+<iframe style="width: 100%;" src="@Url.Action("Render", "Tools", new { id = Model.ToolId })"></iframe>
