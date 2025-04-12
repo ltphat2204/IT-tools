@@ -38,7 +38,7 @@
 }
 
 .close-tab {
-    display: flex;
+    display: none !important;
 }
 
 /* Responsive adjustments */
@@ -50,7 +50,7 @@
     }
 
     .close-tab {
-        display: none;
+        display: flex;
     }
 
     #wrapper.toggled #sidebar-wrapper {
