@@ -50,7 +50,9 @@ namespace PresentationLayer.Controllers
 
             if (ProfileImage != null && ProfileImage.Length > 0)
             {
-                if (!string.IsNullOrEmpty(user.Photo) && !user.Photo.Contains("default_profile"))
+                if (!string.IsNullOrEmpty(user.Photo) 
+                    && !user.Photo.Contains("default_profile")
+                    && !user.Photo.Contains("admin_profile"))
                 {
                     object value = await _photoService.DeletePhotoAsync(user.Photo);
                 }

@@ -8,9 +8,6 @@ using DataAccessLayer.Repositories;
 using DataAccessLayer.Seeds;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Seeds;
-using System.Diagnostics;
-using BusinessLayer.Helpers;
 using BusinessLayer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,8 +23,6 @@ else
 }    
 
 connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-Debug.WriteLine("oke");
-Debug.WriteLine(connectionString);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
