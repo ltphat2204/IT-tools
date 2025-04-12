@@ -8,13 +8,40 @@
     var profilePhoto = user?.Photo;
 }
 
+<style>
+    #sidebar-wrapper ul.nav {
+        padding: 0;
+        list-style: none;
+    }
+
+    #sidebar-wrapper ul.nav li.nav-item a.nav-link {
+        padding: 0.75rem 1rem;
+        display: flex;
+        align-items: center;
+    }
+
+    #sidebar-wrapper ul.nav li.nav-item a.nav-link:hover,
+    #sidebar-wrapper ul.nav li.nav-item a.nav-link.active {
+        background-color: #495057;
+    }
+
+    .nav-title {
+        padding: 0.5rem 1rem;
+        color: #c6c6c6;
+    }
+
+    .nav-title:not(:first-child) {
+        margin-top: 1rem;
+    }
+</style>
+
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <img src="@profilePhoto" alt="@displayName" class="rounded-circle" style="width: 30px; height: 30px; object-fit: cover; margin-right: 5px;" />
-                <span>Xin chào, @displayName</span>
+                <span>Hi, @displayName</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown" style="position: absolute">
                 <li class="nav-item">

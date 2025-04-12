@@ -9,5 +9,6 @@ namespace BusinessLayer.Interfaces
 {
     public interface IToolRepository : IGenericRepository<Tool>
     {
+        IEnumerable<Tool> GetAllWithGroup();
     }
 }
