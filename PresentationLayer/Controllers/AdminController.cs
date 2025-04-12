@@ -17,7 +17,7 @@ namespace PresentationLayer.Controllers
         [HttpGet]
         public IActionResult Groups()
         {
-            var groups = _unitOfWork.Groups.GetAll();
+            var groups = _unitOfWork.Groups.GetAllWithTools();
             return View(groups);
         }
 
