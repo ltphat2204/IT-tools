@@ -1,0 +1,9 @@
+﻿@{
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+}
+
+@Html.Raw(Model.Libraries)
+@Html.Raw(Model.UIStringHtml)
+<script>
+    @Html.Raw(Model.Process)
+</script>

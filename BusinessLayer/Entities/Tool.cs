@@ -19,6 +19,8 @@ namespace BusinessLayer.Entities
         public required string UIStringHtml { get; set; }
         public string? Libraries { get; set; }
         public string? Process { get; set; }
+        
+        public bool IsPremium { get; set; } = false;
 
         [Required]
         public int GroupId { get; set; }
