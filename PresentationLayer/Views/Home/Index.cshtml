@@ -1,3 +1,27 @@
 ﻿@{
     ViewData["Title"] = "Home";
 }
+
+<div class="jumbotron text-center bg-light py-5">
+    <h1 class="display-4">Welcome to IT-Tools</h1>
+    <p class="lead">Your all-in-one toolbox for everyday IT tasks — fast, free, and accessible from anywhere.</p>
+    <hr class="my-4">
+    <p>Explore a wide range of developer-friendly tools including JSON formatter, Base64 encoder/decoder, hash generators, UUID generators, text diff tools, and more.</p>
+</div>
+
+
+<div id="tools" class="container mt-5">
+    <div class="row">
+        @foreach (var tool in Model)
+        {
+            <div class="col-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card shadow-sm" style="height: 7.125rem">
+                    <div class="card-body">
+                        <h5 class="card-title">@tool.Name</h5>
+                        <p class="card-text line-2">@tool.Description</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

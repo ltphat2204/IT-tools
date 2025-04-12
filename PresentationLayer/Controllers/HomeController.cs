@@ -1,21 +1,16 @@
 using System.Diagnostics;
+using BusinessLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using PresentationLayer.Models;
 
 namespace PresentationLayer.Controllers;
 
-public class HomeController : Controller
+public class HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork) : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
-
     public IActionResult Index()
     {
-        return View();
+        var tools = unitOfWork.Tools.GetAllWithGroup();
+        return View(tools);
     }
 
     public IActionResult Privacy()
