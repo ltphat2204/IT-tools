@@ -12,6 +12,9 @@
 <body class="bg-light">
     <div id="wrapper">
         <div id="sidebar-wrapper">
+            <div class="d-flex justify-content-end align-content-center pe-3 pt-2 close-tab">
+                <i class="bi bi-x-lg text-white" style="font-size: 1.5rem; cursor: pointer" onclick="closeTab()"></i>
+            </div>
             <a class="nav-link" asp-controller="Home" asp-action="Index">
                 <div class="sidebar-heading">IT Tools</div>
             </a>
@@ -51,6 +54,10 @@
           e.preventDefault();
           document.getElementById("wrapper").classList.toggle("toggled");
         });
+
+        function closeTab() {
+            document.getElementById("wrapper").classList.remove("toggled");
+        }
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

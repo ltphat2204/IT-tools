@@ -36,10 +36,21 @@
 #wrapper.toggled #sidebar-wrapper {
     margin-left: -250px;
 }
+
+.close-tab {
+    display: flex;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     #sidebar-wrapper {
         margin-left: -250px;
+        position: fixed;
+        z-index: 10;
+    }
+
+    .close-tab {
+        display: none;
     }
 
     #wrapper.toggled #sidebar-wrapper {

@@ -35,7 +35,7 @@
     }
 </style>
 
-<ul class="navbar-nav">
+<ul class="navbar-nav" style="flex-direction: row !important;">
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item dropdown">
@@ -64,10 +64,10 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link btn btn-outline-primary ms-2 me-3 text-dark" asp-controller="Auth" asp-action="Login">Login</a>
+            <a class="btn btn-outline-primary ms-2 me-3 text-dark" asp-controller="Auth" asp-action="Login">Login</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link btn btn-primary text-light" asp-controller="Auth" asp-action="Register">Get started for free</a>
+            <a class="btn btn-primary text-light" asp-controller="Auth" asp-action="Register">Get started for free</a>
         </li>
     }
 </ul>
