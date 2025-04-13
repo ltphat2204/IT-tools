@@ -17,7 +17,7 @@ namespace PresentationLayer.Controllers
         [HttpGet]
         public IActionResult Groups()
         {
-            var groups = _unitOfWork.Groups.GetAllWithTools();
+            var groups = _unitOfWork.Groups.GetAllWithTools().ToList();
             return View(groups);
         }
 
@@ -70,7 +70,7 @@ namespace PresentationLayer.Controllers
         }
         public IActionResult Tools()
         {
-            var tools = _unitOfWork.Tools.GetAllWithGroup();
+            var tools = _unitOfWork.Tools.GetAllWithGroup().ToList();
             return View(tools);
         }
         public IActionResult CreateTool()
