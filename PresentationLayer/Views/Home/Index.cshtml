@@ -15,9 +15,9 @@
         @foreach (var tool in Model)
         {
             <a class="btn-light btn col-6 col-lg-4 col-xl-3 mb-4" style="text-align: left; background-color: transparent; border: none;" href="@Url.Action("Index", "Tools", new { id = tool.ToolId })">
-                <div class="card shadow-sm" style="height: 7.125rem">
+                <div class="card shadow-sm" style="height: 8rem">
                     <div class="card-body">
-                        <h5 class="card-title">@tool.Name</h5>
+                        <h5 class="card-title line-2">@tool.Name</h5>
                         <p class="card-text line-2">@tool.Description</p>
                     </div>
                 </div>
