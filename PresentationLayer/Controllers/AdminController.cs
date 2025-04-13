@@ -17,7 +17,7 @@ namespace PresentationLayer.Controllers
         [HttpGet]
         public IActionResult Groups()
         {
-            var groups = _unitOfWork.Groups.GetAllWithTools();
+            var groups = _unitOfWork.Groups.GetAllWithTools().ToList();
             return View(groups);
         }
 
@@ -70,7 +70,7 @@ namespace PresentationLayer.Controllers
         }
         public IActionResult Tools()
         {
-            var tools = _unitOfWork.Tools.GetAllWithGroup();
+            var tools = _unitOfWork.Tools.GetAllWithGroup().ToList();
             return View(tools);
         }
         public IActionResult CreateTool()
@@ -143,7 +143,8 @@ namespace PresentationLayer.Controllers
                 Libraries = tool.Libraries,
                 Process = tool.Process?.Replace("`", @"\`").Replace("$", @"\$"),
                 GroupId = tool.GroupId,
-                Groups = groups
+                Groups = groups,
+                IsPremium = tool.IsPremium
             };
 
 
@@ -167,6 +168,7 @@ namespace PresentationLayer.Controllers
                 tool.Libraries = model.Libraries;
                 tool.Process = model.Process;
                 tool.GroupId = model.GroupId;
+                tool.IsPremium = model.IsPremium;
 
                 await _unitOfWork.SaveChangesAsync();
 

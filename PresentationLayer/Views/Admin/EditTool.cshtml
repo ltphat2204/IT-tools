@@ -56,6 +56,11 @@
                 <div id="process" style="height: 300px; border: 1px solid #ccc;"></div>
                 @Html.ValidationMessageFor(m => m.Process, "", new { @class = "text-danger" })
             </div>
+            <div class="form-group mt-2">
+                @Html.LabelFor(m => m.IsPremium, new { @class = "form-label" })
+                @Html.CheckBoxFor(m => m.IsPremium, new { @class = "form-check-input", id = "IsPremium" })
+                @Html.ValidationMessageFor(m => m.IsPremium, "", new { @class = "text-danger" })
+            </div>
             <div class="form-group mt-3">
                 <a asp-controller="Admin" asp-action="Tools" class="btn btn-secondary">Back</a>
                 <button type="submit" class="btn btn-primary">Save Changes</button>

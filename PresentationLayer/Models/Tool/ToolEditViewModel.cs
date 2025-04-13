@@ -18,6 +18,8 @@ namespace PresentationLayer.Models.Tool
 
         public string? Process { get; set; }
 
+        public bool IsPremium { get; set; } = false;
+
         [Required(ErrorMessage = "Group is required.")]
         public int GroupId { get; set; }
 
