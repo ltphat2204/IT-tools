@@ -15,6 +15,7 @@
             <th>Tool ID</th>
             <th>Tool Name</th>
             <th>Group Name</th>
+            <th>Premium</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -25,6 +26,15 @@
                 <td>@(i + 1)</td>
                 <td>@Model[i].Name</td>
                 <td>@Model[i].Group.GroupName</td>
+                <td>
+                    @if (Model[i].IsPremium)
+                    {
+                        <i class="bi bi-star-fill text-warning"></i>
+                    } else
+                    {
+                        <i class="bi bi-star"></i>
+                    }
+                </td>
                 <td>
                     <a href="@Url.Action("EditTool", "Admin", new { id = Model[i].ToolId })" class="btn btn-warning btn-sm">
                         Edit

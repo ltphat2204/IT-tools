@@ -143,7 +143,8 @@ namespace PresentationLayer.Controllers
                 Libraries = tool.Libraries,
                 Process = tool.Process?.Replace("`", @"\`").Replace("$", @"\$"),
                 GroupId = tool.GroupId,
-                Groups = groups
+                Groups = groups,
+                IsPremium = tool.IsPremium
             };
 
 
@@ -167,6 +168,7 @@ namespace PresentationLayer.Controllers
                 tool.Libraries = model.Libraries;
                 tool.Process = model.Process;
                 tool.GroupId = model.GroupId;
+                tool.IsPremium = model.IsPremium;
 
                 await _unitOfWork.SaveChangesAsync();
 
