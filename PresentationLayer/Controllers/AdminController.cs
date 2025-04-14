@@ -68,18 +68,39 @@ namespace PresentationLayer.Controllers
 
             return RedirectToAction("Groups");
         }
-        public IActionResult Tools(string searchTerm = "", int groupId = 0, int page = 1)
+        public IActionResult Tools(string searchTerm = "", int groupId = 0, int page = 1, string tab = "active")
         {
             int pageSize = 10;
-            var tools = _unitOfWork.Tools.GetAllWithGroup()
-                            .Where(t => string.IsNullOrEmpty(searchTerm) || t.Name.ToLower().Contains(searchTerm))
-                            .Where(t => groupId == 0 || t.GroupId == groupId)
-                            .OrderBy(t => t.ToolId)
-                            .Skip((page - 1) * pageSize)
-                            .Take(pageSize)
-                            .ToList();
 
-            var totalToolsCount = _unitOfWork.Tools.GetAllWithGroup().Count();
+            var toolsQuery = _unitOfWork.Tools.GetAllWithGroup()
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                toolsQuery = toolsQuery.Where(t => t.Name.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            if (groupId != 0)
+            {
+                toolsQuery = toolsQuery.Where(t => t.GroupId == groupId);
+            }
+
+            if (tab == "disabled")
+            {
+                toolsQuery = toolsQuery.Where(t => t.IsDisabled);
+            }
+            else
+            {
+                toolsQuery = toolsQuery.Where(t => !t.IsDisabled);
+            }
+
+            var tools = toolsQuery
+                .OrderBy(t => t.ToolId)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            var totalToolsCount = toolsQuery.Count();
 
             var model = new ToolsViewModel
             {
@@ -88,7 +109,8 @@ namespace PresentationLayer.Controllers
                 CurrentSearchTerm = searchTerm,
                 CurrentGroupId = groupId,
                 CurrentPage = page,
-                TotalPages = (int)Math.Ceiling((double)totalToolsCount / pageSize)
+                TotalPages = (int)Math.Ceiling((double)totalToolsCount / pageSize),
+                Tab = tab
             };
 
             return View(model);
