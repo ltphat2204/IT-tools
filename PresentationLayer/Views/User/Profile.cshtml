@@ -1,7 +1,7 @@
 ﻿@using PresentationLayer.Models.User
 @model UpdateProfileViewModel
 
-<div class="p-4 row">
+<div class="p-4 row container mx-auto">
     <div class="col">
         @using (Html.BeginForm("UpdateProfile", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {

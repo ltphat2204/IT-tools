@@ -2,26 +2,16 @@
 using PresentationLayer.Models.User;
 using BusinessLayer.Interfaces;
 using DataAccessLayer;
+using BusinessLayer.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace PresentationLayer.Controllers
 {
-    //[Authorize]
-    public class UserController : Controller
+    public class UserController(ApplicationDbContext context, IPhotoService photoService, IHttpContextAccessor httpContextAccessor, UserManager<ApplicationUser> userManager) : Controller
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IPhotoService _photoService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public UserController(ApplicationDbContext context, IPhotoService photoService, IHttpContextAccessor httpContextAccessor)
+        public async Task<IActionResult> Profile()
         {
-            _context = context;
-            _photoService = photoService;
-            _httpContextAccessor = httpContextAccessor;
-        }
-
-        public IActionResult Profile()
-        {
-            var user = _context.Users.FirstOrDefault();
+            var user = await userManager.GetUserAsync(User);
 
             if (user == null)
                 return NotFound();
@@ -42,7 +32,7 @@ namespace PresentationLayer.Controllers
             if (!ModelState.IsValid)
                 return View("Profile", model);
 
-            var user = _context.Users.FirstOrDefault(u => u.Id == model.Id);
+            var user = context.Users.FirstOrDefault(u => u.Id == model.Id);
             if (user == null)
                 return NotFound();
 
@@ -54,10 +44,10 @@ namespace PresentationLayer.Controllers
                     && !user.Photo.Contains("default_profile")
                     && !user.Photo.Contains("admin_profile"))
                 {
-                    object value = await _photoService.DeletePhotoAsync(user.Photo);
+                    object value = await photoService.DeletePhotoAsync(user.Photo);
                 }
 
-                var uploadResult = await _photoService.AddPhotoAsync(ProfileImage);
+                var uploadResult = await photoService.AddPhotoAsync(ProfileImage);
                 if (uploadResult.Error != null)
                 {
                     ModelState.AddModelError("ProfileImage", uploadResult.Error.Message);
@@ -67,7 +57,7 @@ namespace PresentationLayer.Controllers
                 user.Photo = uploadResult.SecureUrl.ToString();
             }
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
             return RedirectToAction("Profile");
         }
