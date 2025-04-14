@@ -12,11 +12,14 @@
     {
         foreach (var tool in group.Tools)
         {
-            <li class="nav-item">
-                <a class="nav-link text-white" href="@Url.Action("Index", "Tools", new { id = tool.ToolId })">
-                    @tool.Name
-                </a>
-            </li>
+            @if (!tool.IsDisabled)
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="@Url.Action("Index", "Tools", new { id = tool.ToolId })">
+                        @tool.Name
+                    </a>
+                </li>
+            }
         }
     }
 }

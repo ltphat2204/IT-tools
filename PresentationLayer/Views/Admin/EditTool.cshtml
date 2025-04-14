@@ -61,6 +61,11 @@
                 @Html.CheckBoxFor(m => m.IsPremium, new { @class = "form-check-input", id = "IsPremium" })
                 @Html.ValidationMessageFor(m => m.IsPremium, "", new { @class = "text-danger" })
             </div>
+            <div class="form-group mt-2">
+                @Html.LabelFor(m => m.IsDisabled, new { @class = "form-label" })
+                @Html.CheckBoxFor(m => m.IsDisabled, new { @class = "form-check-input", id = "IsDisabled" })
+                @Html.ValidationMessageFor(m => m.IsDisabled, "", new { @class = "text-danger" })
+            </div>
             <div class="form-group mt-3">
                 <a asp-controller="Admin" asp-action="Tools" class="btn btn-secondary">Back</a>
                 <button type="submit" class="btn btn-primary">Save Changes</button>

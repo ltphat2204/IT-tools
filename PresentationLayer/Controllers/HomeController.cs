@@ -9,13 +9,8 @@ public class HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWo
 {
     public IActionResult Index()
     {
-        var tools = unitOfWork.Tools.GetAllWithGroup();
+        var tools = unitOfWork.Tools.GetAllWithGroup().Where(t => !t.IsDisabled);
         return View(tools);
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
