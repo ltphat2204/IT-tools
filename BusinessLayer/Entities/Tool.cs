@@ -22,6 +22,8 @@ namespace BusinessLayer.Entities
         
         public bool IsPremium { get; set; } = false;
 
+        public bool IsDisabled { get; set; } = false;
+
         [Required]
         public int GroupId { get; set; }
         public required Group Group { get; set; }

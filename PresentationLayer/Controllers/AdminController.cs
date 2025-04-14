@@ -68,10 +68,30 @@ namespace PresentationLayer.Controllers
 
             return RedirectToAction("Groups");
         }
-        public IActionResult Tools()
+        public IActionResult Tools(string searchTerm = "", int groupId = 0, int page = 1)
         {
-            var tools = _unitOfWork.Tools.GetAllWithGroup().ToList();
-            return View(tools);
+            int pageSize = 10;
+            var tools = _unitOfWork.Tools.GetAllWithGroup()
+                            .Where(t => string.IsNullOrEmpty(searchTerm) || t.Name.ToLower().Contains(searchTerm))
+                            .Where(t => groupId == 0 || t.GroupId == groupId)
+                            .OrderBy(t => t.ToolId)
+                            .Skip((page - 1) * pageSize)
+                            .Take(pageSize)
+                            .ToList();
+
+            var totalToolsCount = _unitOfWork.Tools.GetAllWithGroup().Count();
+
+            var model = new ToolsViewModel
+            {
+                Tools = tools,
+                Groups = _unitOfWork.Groups.GetAll().ToList(),
+                CurrentSearchTerm = searchTerm,
+                CurrentGroupId = groupId,
+                CurrentPage = page,
+                TotalPages = (int)Math.Ceiling((double)totalToolsCount / pageSize)
+            };
+
+            return View(model);
         }
         public IActionResult CreateTool()
         {
@@ -144,7 +164,8 @@ namespace PresentationLayer.Controllers
                 Process = tool.Process?.Replace("`", @"\`").Replace("$", @"\$"),
                 GroupId = tool.GroupId,
                 Groups = groups,
-                IsPremium = tool.IsPremium
+                IsPremium = tool.IsPremium,
+                IsDisabled = tool.IsDisabled
             };
 
 
@@ -169,6 +190,7 @@ namespace PresentationLayer.Controllers
                 tool.Process = model.Process;
                 tool.GroupId = model.GroupId;
                 tool.IsPremium = model.IsPremium;
+                tool.IsDisabled = model.IsDisabled;
 
                 await _unitOfWork.SaveChangesAsync();
 
