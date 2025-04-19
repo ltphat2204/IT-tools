@@ -30,8 +30,8 @@
                     <button class="btn btn-outline-primary me-2" id="menu-toggle">
                         <i class="bi bi-list"></i>
                     </button>
-                    <form class="d-flex flex-grow-1 mx-2">
-                        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                    <form class="d-flex flex-grow-1 mx-2" asp-action="Index" asp-controller="Search">
+                        <input name="searchTerm" class="form-control" type="search" placeholder="Search" aria-label="Search">
                     </form>
                     <partial name="_LoginPartial" />
                 </div>
