@@ -15,8 +15,13 @@
             @if (!tool.IsDisabled)
             {
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="@Url.Action("Index", "Tools", new { id = tool.ToolId })">
+                    <a style="position: relative" class="nav-link text-white" href="@Url.Action("Index", "Tools", new { id = tool.ToolId })">
                         @tool.Name
+                        @if (tool.IsPremium)
+                        {
+                            <img src="/crown.png" alt="Premium" style="height: 16px; width: auto; position: absolute; top: 0.5rem; right: 0.5rem;" />
+
+                        }
                     </a>
                 </li>
             }
