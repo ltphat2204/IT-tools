@@ -27,5 +27,7 @@ namespace BusinessLayer.Entities
         [Required]
         public int GroupId { get; set; }
         public required Group Group { get; set; }
+
+        public ICollection<ApplicationUser> FavoritedByUsers { get; set; } = [];
     }
 }

@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Entities;
 using BusinessLayer.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Repositories
 {
@@ -42,6 +43,21 @@ namespace DataAccessLayer.Repositories
         public async Task SignOutAsync()
         {
             await _signInManager.SignOutAsync();
+        }
+
+        public async Task<bool> IsToolFavoriteAsync(string userId, int toolId)
+        {
+            if (string.IsNullOrEmpty(userId) || toolId <= 0)
+            {
+                return false;
+            }
+
+            bool isFavorite = await _context.Users
+                                      .Where(u => u.Id == userId)
+                                      .SelectMany(u => u.FavoriteTools) 
+                                      .AnyAsync(t => t.ToolId == toolId);
+
+            return isFavorite;
         }
     }
 }

@@ -10,5 +10,9 @@ namespace BusinessLayer.Entities
         public required string Name { get; set; }
         [DefaultValue("https://res.cloudinary.com/ltphat2204/image/upload/q_auto:best/f_auto/default_profile")]
         public string Photo { get; set; } = "https://res.cloudinary.com/ltphat2204/image/upload/q_auto:best/f_auto/default_profile";
+        [DefaultValue(null)]
+        public string? PremiumRequest { get; set; }
+
+        public ICollection<Tool> FavoriteTools { get; set; } = [];
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Entities;
 using BusinessLayer.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PresentationLayer.Models.Group;
 using PresentationLayer.Models.Tool;
@@ -7,6 +8,7 @@ using System.Diagnostics;
 
 namespace PresentationLayer.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController(IUnitOfWork _unitOfWork, ILogger<AuthController> logger) : Controller
     {
         public IActionResult Index()

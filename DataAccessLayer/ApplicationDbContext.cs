@@ -12,6 +12,11 @@ namespace DataAccessLayer
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ApplicationUser>()
+            .HasMany(u => u.FavoriteTools)
+            .WithMany(t => t.FavoritedByUsers)
+            .UsingEntity(j => j.ToTable("UserFavoriteTools"));
         }
     }
 }
