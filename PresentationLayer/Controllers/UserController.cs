@@ -4,11 +4,32 @@ using BusinessLayer.Interfaces;
 using DataAccessLayer;
 using BusinessLayer.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PresentationLayer.Controllers
 {
+    [Authorize]
     public class UserController(ApplicationDbContext context, IPhotoService photoService, IHttpContextAccessor httpContextAccessor, UserManager<ApplicationUser> userManager) : Controller
     {
+        public async Task<IActionResult> MyFavorites()
+        {
+            var user = await userManager.GetUserAsync(User);
+
+            var userWithFavorites = await context.Users
+                                          .Where(u => u.Id == user.Id)
+                                          .Include(u => u.FavoriteTools)
+                                            .ThenInclude(t => t.Group)
+                                          .FirstOrDefaultAsync();
+
+            if (userWithFavorites == null)
+            {
+                return NotFound("User data could not be loaded.");
+            }
+
+            return View(userWithFavorites.FavoriteTools ?? []);
+        }
+
         public async Task<IActionResult> Profile()
         {
             var user = await userManager.GetUserAsync(User);

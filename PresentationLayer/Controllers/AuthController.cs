@@ -12,6 +12,12 @@ namespace PresentationLayer.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Deny()
+        {
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
