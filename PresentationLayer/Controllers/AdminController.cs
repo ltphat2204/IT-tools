@@ -1,19 +1,22 @@
 ﻿using BusinessLayer.Entities;
 using BusinessLayer.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PresentationLayer.Models.Group;
 using PresentationLayer.Models.Tool;
+using PresentationLayer.Models.User;
 using System.Diagnostics;
 
 namespace PresentationLayer.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class AdminController(IUnitOfWork _unitOfWork, ILogger<AuthController> logger) : Controller
+    public class AdminController(IUnitOfWork _unitOfWork, ILogger<AuthController> logger, UserManager<ApplicationUser> userManager) : Controller
     {
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("PremiumRequests");
         }
 
         [HttpGet]
@@ -248,6 +251,130 @@ namespace PresentationLayer.Controllers
             }
 
             return RedirectToAction("Tools");
+        }
+
+        public async Task<IActionResult> Users(int page = 1, string search = "", string roleFilter = "All")
+        {
+            const int pageSize = 10;
+            var usersQuery = userManager.Users.AsQueryable();
+
+            // Search by username or email
+            if (!string.IsNullOrEmpty(search))
+            {
+                usersQuery = usersQuery.Where(u => u.UserName.Contains(search) || u.Email.Contains(search));
+            }
+
+            // Filter by role
+            if (roleFilter != "All")
+            {
+                usersQuery = usersQuery.Where(u => userManager.GetRolesAsync(u).Result.Contains(roleFilter));
+            }
+
+            // Pagination
+            var totalUsers = await usersQuery.CountAsync();
+            var users = await usersQuery.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            // Prepare the model
+            var model = new UserListViewModel
+            {
+                Users = users,
+                TotalUsers = totalUsers,
+                CurrentPage = page,
+                PageSize = pageSize,
+                SearchQuery = search,
+                RoleFilter = roleFilter,
+                Roles = ["User", "Premium"]
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeRole(string userId, string newRole)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null) return NotFound();
+
+            var currentRoles = await userManager.GetRolesAsync(user);
+            if (currentRoles.Contains("Admin")) return Forbid();
+
+            if (newRole == "Premium" && !currentRoles.Contains("Premium"))
+            {
+                await userManager.AddToRoleAsync(user, "Premium");
+                await userManager.RemoveFromRoleAsync(user, "User");
+            }
+            else if (newRole == "User" && !currentRoles.Contains("User"))
+            {
+                await userManager.AddToRoleAsync(user, "User");
+                await userManager.RemoveFromRoleAsync(user, "Premium");
+            }
+
+            return RedirectToAction("Users");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null) return NotFound();
+
+            var result = await userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Users");
+            }
+
+            return View("Error", result.Errors);
+        }
+        public async Task<IActionResult> PremiumRequests(int page = 1)
+        {
+            const int pageSize = 10;
+            var usersQuery = userManager.Users.Where(u => u.PremiumRequest == "Pending").AsQueryable();
+
+            var totalUsers = await usersQuery.CountAsync();
+            var users = await usersQuery.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            var model = new PremiumRequestViewModel
+            {
+                Users = users,
+                TotalUsers = totalUsers,
+                CurrentPage = page,
+                PageSize = pageSize
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ApprovePremiumRequest(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound();
+
+            var roles = await userManager.GetRolesAsync(user);
+            if (!roles.Contains("Premium"))
+            {
+                await userManager.AddToRoleAsync(user, "Premium");
+            }
+
+                user.PremiumRequest = "Approved";
+            await userManager.UpdateAsync(user);
+
+            return RedirectToAction("PremiumRequests");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RejectPremiumRequest(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound();
+
+            user.PremiumRequest = "Rejected";
+            await userManager.UpdateAsync(user);
+
+            return RedirectToAction("PremiumRequests");
         }
     }
 }

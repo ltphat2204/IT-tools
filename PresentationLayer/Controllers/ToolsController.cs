@@ -12,17 +12,27 @@ namespace PresentationLayer.Controllers
         public async Task<IActionResult> Index(int id)
         {
             var tool = unitOfWork.Tools.GetById(id);
+            if (tool == null || tool.IsDisabled)
+            {
+                return NotFound();
+            }
+
             bool isFavorite = false;
             var user = await userManager.GetUserAsync(User);
+
+            bool isBlocked = tool.IsPremium;
             if (user != null)
             {
                 isFavorite = await unitOfWork.Users.IsToolFavoriteAsync(user.Id, id);
+                var roles = await userManager.GetRolesAsync(user);
+                isBlocked = tool.IsPremium && !roles.Contains("Premium");
             }
 
             var viewModel = new ToolDetailViewModel
             {
                 Tool = tool,
-                IsFavorite = isFavorite
+                IsFavorite = isFavorite,
+                IsBlock = isBlocked
             };
 
             return View(viewModel);

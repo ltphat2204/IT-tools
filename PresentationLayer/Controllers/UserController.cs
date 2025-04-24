@@ -6,6 +6,7 @@ using BusinessLayer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using System.Diagnostics;
 
 namespace PresentationLayer.Controllers
 {
@@ -37,15 +38,40 @@ namespace PresentationLayer.Controllers
             if (user == null)
                 return NotFound();
 
+            var roles = await userManager.GetRolesAsync(user);
+
             var profile = new UpdateProfileViewModel
             {
                 Id = user.Id,
                 Name = user.Name,
                 Email = user.Email,
-                ImageUrl = user.Photo
+                ImageUrl = user.Photo,
+                PremiumRequest = user.PremiumRequest,
+                IsPremium = roles.Contains("Premium")
             };
 
             return View(profile);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RequestPremium()
+        {
+            var user = await userManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            if (user.PremiumRequest != null && user.PremiumRequest == "Pending")
+            {
+                return BadRequest("You already have a pending premium request.");
+            }
+
+            user.PremiumRequest = "Pending";
+            await userManager.UpdateAsync(user);
+
+            return Ok("Premium request has been submitted successfully.");
         }
 
         public async Task<IActionResult> UpdateProfile(UpdateProfileViewModel model, IFormFile? ProfileImage)

@@ -1,6 +1,23 @@
 ﻿@using PresentationLayer.Models.User
 @model UpdateProfileViewModel
 
+<div class="container mt-3">
+    @if (Model.PremiumRequest == "Approved")
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Your premium request has been approved!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (Model.PremiumRequest == "Rejected")
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            Your premium request has been rejected.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+</div>
+
 <div class="p-4 row container mx-auto">
     <div class="col">
         @using (Html.BeginForm("UpdateProfile", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -34,8 +51,66 @@
                 <small class="form-text text-muted">Your email cannot be changed.</small>
             </div>
 
+            @if (Model.IsPremium)
+            {
+                <span class="badge bg-success mb-3">Premium</span>
+            }
+
             <button type="submit" class="btn btn-primary w-100 mb-3">Save Changes</button>
             <button type="button" class="btn btn-outline-secondary w-100">Change Password</button>
+
+            @if (Model.PremiumRequest == "Pending")
+            {
+                <button id="requestPremiumBtn" class="btn btn-warning w-100 mt-3" disabled>
+                    Your request is being processed
+                </button>
+            }
+            else if (Model.PremiumRequest != "Approved")
+            {
+                <button id="requestPremiumBtn" class="btn btn-warning w-100 mt-3">Request Premium</button>
+            }
         }
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $('#requestPremiumBtn').click(function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '@Url.Action("RequestPremium", "User")',
+                type: 'POST',
+                data: {
+                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function (response) {
+                    if (response === "Premium request has been submitted successfully.") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Request Submitted',
+                            text: 'Your premium request has been submitted successfully!',
+                            confirmButtonText: 'Ok'
+                        });
+                        $('#requestPremiumBtn').attr('disabled', true);
+                        $('#requestPremiumBtn').text('Your request is being processed');
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response,
+                            confirmButtonText: 'Ok'
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'There was an issue submitting the request: ' + error,
+                        confirmButtonText: 'Ok'
+                    });
+                }
+            });
+        });
+    });
+</script>
