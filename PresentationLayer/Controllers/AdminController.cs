@@ -280,10 +280,10 @@ namespace PresentationLayer.Controllers
                 Users = users,
                 TotalUsers = totalUsers,
                 CurrentPage = page,
-                PageSize = pageSize,
                 SearchQuery = search,
                 RoleFilter = roleFilter,
-                Roles = ["User", "Premium"]
+                Roles = ["User", "Premium"],
+                TotalPages = (int)Math.Ceiling((double)totalUsers / pageSize),
             };
 
             return View(model);
@@ -327,7 +327,7 @@ namespace PresentationLayer.Controllers
                 Users = users,
                 TotalUsers = totalUsers,
                 CurrentPage = page,
-                PageSize = pageSize
+                TotalPages = (int)Math.Ceiling((double)totalUsers / pageSize),
             };
 
             return View(model);
