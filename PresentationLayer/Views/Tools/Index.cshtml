@@ -14,16 +14,16 @@
         @if (User.Identity.IsAuthenticated)
         {
             <button id="favorite-toggle-btn" class="btn text-danger" style="font-size: 2rem;"
-                    data-tool-id="@Model.Tool.ToolId"
-                    title="@(Model.IsFavorite ? "Bỏ thích" : "Yêu thích")">
+            data-tool-id="@Model.Tool.ToolId"
+            title="@(Model.IsFavorite ? "Bỏ thích" : "Yêu thích")">
                 <i id="favorite-icon" class="bi @(Model.IsFavorite ? "bi-heart-fill" : "bi-heart")"></i>
             </button>
             <form id="anti-forgery-form"> @Html.AntiForgeryToken() </form>
         }
         else
         {
-            <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Context.Request.Path"
-               class="btn text-secondary" style="font-size: 2rem;" title="Đăng nhập để yêu thích">
+            <a asp-controller="Auth" asp-action="Login" asp-route-returnUrl="@Context.Request.Path"
+            class="btn text-secondary" style="font-size: 2rem;" title="Đăng nhập để yêu thích">
                 <i class="bi bi-heart"></i>
             </a>
         }
@@ -40,7 +40,15 @@
 
 <hr class="my-4" />
 
-<iframe style="width: 100%; height: 100svh" src="@Url.Action("Render", "Tools", new { id = Model.Tool.ToolId })"></iframe>
+@if (Model.IsBlock)
+{
+    <div class="alert alert-warning">
+        <strong>Notice:</strong> This tool is available for premium users only. Please <a href="@Url.Action("Profile", "User")">upgrade to premium</a> to use this tool.
+    </div>
+} else
+{
+    <iframe style="width: 100%; height: 100svh" src="@Url.Action("Render", "Tools", new { id = Model.Tool.ToolId })"></iframe>
+}
 
 @section Scripts {
     <script>

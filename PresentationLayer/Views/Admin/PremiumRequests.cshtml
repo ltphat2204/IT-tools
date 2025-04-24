@@ -1,0 +1,56 @@
+﻿@model PresentationLayer.Models.User.PremiumRequestViewModel
+
+@{
+    ViewData["Title"] = "Premium Requests";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-5">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Premium Request</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Users)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.Name</td>
+                    <td>@user.Email</td>
+                    <td>@user.PremiumRequest</td>
+                    <td>
+                        <!-- Approve button -->
+                        <form method="post" action="@Url.Action("ApprovePremiumRequest", "Admin")" style="display:inline;">
+                            <input type="hidden" name="userId" value="@user.Id" />
+                            <button type="submit" class="btn btn-success">Approve</button>
+                        </form>
+
+                        <!-- Reject button -->
+                        <form method="post" action="@Url.Action("RejectPremiumRequest", "Admin")" style="display:inline;">
+                            <input type="hidden" name="userId" value="@user.Id" />
+                            <button type="submit" class="btn btn-danger">Reject</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <nav>
+        <ul class="pagination">
+            @for (var i = 1; i <= (Model.TotalUsers / Model.PageSize); i++)
+            {
+                <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("PremiumRequests", new { page = i })">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
