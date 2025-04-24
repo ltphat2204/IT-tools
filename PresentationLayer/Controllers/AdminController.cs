@@ -309,6 +309,9 @@ namespace PresentationLayer.Controllers
                 await userManager.RemoveFromRoleAsync(user, "Premium");
             }
 
+            user.PremiumRequest = null;
+            await userManager.UpdateAsync(user);
+
             return RedirectToAction("Users");
         }
 
