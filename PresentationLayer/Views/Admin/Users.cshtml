@@ -56,7 +56,7 @@
             @foreach (var user in Model.Users)
             {
                 var roles = await @UserManager.GetRolesAsync(user);
-                var role = roles.FirstOrDefault() ?? "User";
+                var role = roles[0];
                 <tr>
                     <td>@user.Id</td>
                     <td>@user.Name</td>

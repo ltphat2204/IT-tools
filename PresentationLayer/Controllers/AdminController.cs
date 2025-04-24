@@ -356,9 +356,10 @@ namespace PresentationLayer.Controllers
             if (!roles.Contains("Premium"))
             {
                 await userManager.AddToRoleAsync(user, "Premium");
+                await userManager.RemoveFromRoleAsync(user, "User");
             }
 
-                user.PremiumRequest = "Approved";
+            user.PremiumRequest = "Approved";
             await userManager.UpdateAsync(user);
 
             return RedirectToAction("PremiumRequests");
