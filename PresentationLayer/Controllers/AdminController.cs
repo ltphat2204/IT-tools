@@ -255,7 +255,7 @@ namespace PresentationLayer.Controllers
 
         public async Task<IActionResult> Users(int page = 1, string search = "", string roleFilter = "All")
         {
-            const int pageSize = 10;
+            const int pageSize = 5;
             var usersQuery = userManager.Users.AsQueryable();
 
             // Search by username or email
@@ -313,21 +313,6 @@ namespace PresentationLayer.Controllers
             await userManager.UpdateAsync(user);
 
             return RedirectToAction("Users");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> DeleteUser(string userId)
-        {
-            var user = await userManager.FindByIdAsync(userId);
-            if (user == null) return NotFound();
-
-            var result = await userManager.DeleteAsync(user);
-            if (result.Succeeded)
-            {
-                return RedirectToAction("Users");
-            }
-
-            return View("Error", result.Errors);
         }
         public async Task<IActionResult> PremiumRequests(int page = 1)
         {

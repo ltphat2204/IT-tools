@@ -9,7 +9,6 @@
 }
 
 <div class="container mt-5">
-    <!-- Search and filter -->
     <form method="get" class="d-flex gap-2">
         <input class="form-control w-50" type="text" name="search" value="@Model.SearchQuery" placeholder="Search by name or email" />
         <select name="roleFilter" class="form-select w-25">
@@ -41,7 +40,6 @@
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
-    <!-- User table -->
     <table class="table table-bordered table-striped mt-3">
         <thead>
             <tr>
@@ -63,12 +61,6 @@
                     <td>@user.Email</td>
                     <td>@role</td>
                     <td>
-                        <!-- Edit button -->
-                        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editUserModal" data-id="@user.Id" data-name="@user.Name" data-email="@user.Email">
-                            Edit
-                        </button>
-
-                        <!-- Role Change -->
                         @if (role == "Premium")
                         {
                             <form method="post" action="@Url.Action("ChangeRole", "Admin")" style="display:inline;">
@@ -85,18 +77,12 @@
                                 <button type="submit" class="btn btn-success">Upgrade to Premium</button>
                             </form>
                         }
-                        
-                        <!-- Delete button -->
-                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal" data-id="@user.Id" data-name="@user.Name">
-                            Delete
-                        </button>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 
-    <!-- Pagination -->
     <nav class="d-flex justify-content-center">
         <ul class="pagination">
             @for (var i = 1; i <= (Model.TotalUsers / Model.PageSize); i++)
@@ -108,79 +94,3 @@
         </ul>
     </nav>
 </div>
-
-<!-- Edit User Modal -->
-<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form method="post" action="@Url.Action("EditUser", "Admin")">
-                <div class="modal-body">
-                    <input type="hidden" id="EditUserId" name="UserId" />
-                    <div class="form-group">
-                        <label for="EditUserName">User Name</label>
-                        <input type="text" class="form-control" id="EditUserName" name="Name" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="EditUserEmail">Email</label>
-                        <input type="email" class="form-control" id="EditUserEmail" name="Email" required />
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Delete User Modal -->
-<div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteUserModalLabel">Delete User</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form method="post" action="@Url.Action("DeleteUser", "Admin")">
-                <div class="modal-body">
-                    <input type="hidden" id="DeleteUserId" name="UserId" />
-                    <p>Are you sure you want to delete the user <strong><span id="DeleteUserName"></span></strong>?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<script>
-    $('#editUserModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var userId = button.data('id');
-        var userName = button.data('name');
-        var userEmail = button.data('email');
-
-        var modal = $(this);
-        modal.find('.modal-body #EditUserId').val(userId);
-        modal.find('.modal-body #EditUserName').val(userName);
-        modal.find('.modal-body #EditUserEmail').val(userEmail);
-    });
-
-    $('#deleteUserModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var userId = button.data('id');
-        var userName = button.data('name');
-
-        var modal = $(this);
-        modal.find('.modal-body #DeleteUserId').val(userId);
-        modal.find('.modal-body #DeleteUserName').text(userName);
-    });
-
-</script>
