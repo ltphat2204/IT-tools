@@ -25,7 +25,7 @@ namespace PresentationLayer.Controllers
             {
                 isFavorite = await unitOfWork.Users.IsToolFavoriteAsync(user.Id, id);
                 var roles = await userManager.GetRolesAsync(user);
-                isBlocked = tool.IsPremium && !roles.Contains("Premium");
+                isBlocked = tool.IsPremium && !(roles.Contains("Premium") || roles.Contains("Admin"));
             }
 
             var viewModel = new ToolDetailViewModel
