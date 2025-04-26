@@ -5,4 +5,6 @@
 2. Admin bấm nút “Create New Tool” ở góc phải màn hình.
 3. Admin được chuyển sang giao diện thêm công cụ mới.
 4. Admin nhập tên, mô tả, thư viện, mã nguồn và chọn group cho công cụ.
-6. Admin bấm “Save Changes” để lưu công cụ vừa tạo.
+5. Admin bấm “Save Changes” để lưu công cụ vừa tạo.
+
+![/help.png](/help.png)
